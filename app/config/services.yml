@@ -29,6 +29,11 @@ services:
         public: true
         tags: ['controller.service_arguments']
 
+    admin_middleware:
+        class: AppBundle\Middleware\EventSubscriber\AdminMiddleware
+        tags: ['kernel.event_subscriber']
+
+
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:
     #     arguments:
