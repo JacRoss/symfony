@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="card" style="margin-bottom: 3%">
+        <div class="card-body">
+            <div class="form-group">
+                <select id="search" class="form-control"></select>
+            </div>
+        </div>
+    </div>
+
+    {% for article in articles %}
+        {% include 'article/partials/_article.twig' %}
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,11 @@
+<div class="card" style="margin-bottom: 3%">
+    <div class="card-header">
+        {{ article.title }}
+    </div>
+    <div class="card-body">
+        <p class="card-text">{{ article.body | raw }}</p>
+    </div>
+    <div class="card-footer">
+        Автор: {{ article.user.username }} ({{ article.createdAt | date }})
+    </div>
+</div>
