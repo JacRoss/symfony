@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% for day,categories in weekly %}
+        <h1>{{ day }}</h1>
+        {% for category,articles in categories %}
+            <h2>{{ category }}</h2>
+            {% for article in articles %}
+                {% include 'article/partials/_article.twig' %}
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
+{% endblock %}

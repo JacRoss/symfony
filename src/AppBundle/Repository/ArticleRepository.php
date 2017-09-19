@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+
 /**
  * ArticleRepository
  *
@@ -10,6 +11,7 @@ namespace AppBundle\Repository;
  */
 class ArticleRepository extends \Doctrine\ORM\EntityRepository
 {
+
     public function getLatestArticles($limit = null)
     {
         return $this->findBy([], ['id' => 'desc'], $limit);
@@ -22,5 +24,43 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('query', '%' . $query . '%')
             ->getQuery()
             ->getArrayResult();
+    }
+
+    public function getWeekly()
+    {
+        $weekly = [];
+        $startWeek = (new \DateTime())->setTimestamp(strtotime('monday this week'));
+        $endWeek = (new \DateTime())->setTimestamp(strtotime('sunday this week'));
+
+        $articles = $this->createQueryBuilder('q')
+            ->where('q.deleted_at is null')
+            ->andWhere('q.created_at BETWEEN :monday AND :sunday')
+            ->setParameter('monday', $startWeek)
+            ->setParameter('sunday', $endWeek)
+            ->getQuery()
+            ->getResult();
+
+        foreach ($articles as $article) {
+            $weekly[$article->getCreatedDayOfWeek()][$article->getCategory()->getName() ?? 'none'][] = $article;
+        }
+
+
+        return $weekly;
+    }
+
+    public function destroy(int $category, $date)
+    {
+        $deletedAt = (new \DateTime())->format('Y-m-d H:i:s');
+
+        $builder = $this->createQueryBuilder('u');
+        $query = $builder->update()
+            ->set('u.deleted_at', $builder->expr()->literal($deletedAt))
+            ->where('u.category_id = :category')
+            ->andWhere('u.deleted_at is not null')
+            ->andWhere('u.created_at < :date')
+            ->setParameter('category', $category)
+            ->setParameter('date', $date)
+            ->getQuery();
+        $query->getSingleScalarResult();
     }
 }
