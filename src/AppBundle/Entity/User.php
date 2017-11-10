@@ -45,9 +45,15 @@ class User
      */
     private $articles;
 
+    /**
+     * @ORM\OneToMany(targetEntity="UserRole", mappedBy="user")
+     */
+    private $roles;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
+        $this->roles = new ArrayCollection();
     }
 
     /**
@@ -164,5 +170,39 @@ class User
     public function getArticles()
     {
         return $this->articles;
+    }
+
+    /**
+     * Add role
+     *
+     * @param \AppBundle\Entity\UserRole $role
+     *
+     * @return User
+     */
+    public function addRole(\AppBundle\Entity\UserRole $role)
+    {
+        $this->roles[] = $role;
+
+        return $this;
+    }
+
+    /**
+     * Remove role
+     *
+     * @param \AppBundle\Entity\UserRole $role
+     */
+    public function removeRole(\AppBundle\Entity\UserRole $role)
+    {
+        $this->roles->removeElement($role);
+    }
+
+    /**
+     * Get roles
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRoles()
+    {
+        return $this->roles;
     }
 }

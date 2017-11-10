@@ -10,4 +10,13 @@ namespace AppBundle\Repository;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getAll()
+    {
+        return $this->findAll();
+    }
+
+    public function getById(int $id)
+    {
+        return $this->find($id);
+    }
 }

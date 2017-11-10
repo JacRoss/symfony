@@ -103,10 +103,10 @@ class ArticleController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $task = $form->getData();
-            $articleRepository->destroy($task->getCategory(), $task->getDate());
-            return $this->redirectToRoute('articles.weekly');
-        }
+        $task = $form->getData();
+        $articleRepository->destroy($task->getCategory(), $task->getDate());
+        return $this->redirectToRoute('articles.weekly');
+    }
 
         return $this->render('article/destroy.html.twig', [
             'form' => $form->createView(),
